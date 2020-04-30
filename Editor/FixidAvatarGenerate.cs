@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace FixidAvatar {
+namespace FixidAvatarGenerator {
 	public class FixidAvatarGenerate : EditorWindow 
 	{
 		private Object attachObject;
@@ -19,7 +19,7 @@ namespace FixidAvatar {
 		private List<GameObject> fromList;
 		private List<GameObject> toFixidList;
 
-		[MenuItem("VRChat SDK/Utilities/Fixid Avatar Generator")]
+		[MenuItem("VRCDeveloperTool/Fixid Avatar Generator")]
 		private static void Open(){
 			EditorWindow.GetWindow<FixidAvatarGenerate>("Fixid Avatar Generator");
 		}
@@ -28,6 +28,8 @@ namespace FixidAvatar {
 		void OnGUI() {
    		   	GUILayout.Label ("追従するアバターを生成します", EditorStyles.boldLabel);
 			this.attachObject = EditorGUILayout.ObjectField (this.attachObject, typeof(Object), true);
+
+			// アタッチされていなかったら return
 			if(this.attachObject == null){
 	   		   	GUILayout.Label ("Please Attach Avatar ", EditorStyles.boldLabel);
 	   		   	GUILayout.Label ("アバターをセットしてください", EditorStyles.boldLabel);
@@ -129,10 +131,11 @@ namespace FixidAvatar {
 		}
 
 		void Copy(){
-			// 追従化するアバターを用意
+			// 追従化するアバターを用意して target に代入
 			target = Object.Instantiate(avatar.gameObject) as GameObject;
 			target.name = avatar.gameObject.name + "_fixid";
 
+			// 追従用モデルを copied に代入
 			copied = Object.Instantiate(target) as GameObject;
 			copied.transform.Translate(0, 0, -1.5f);
 		}

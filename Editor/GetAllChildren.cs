@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-namespace FixidAvatar {
-
+namespace FixidAvatarGenerator {
 	public static class GetAllChildren
 	{
 		public static List<GameObject>  GetAll (this GameObject obj)
