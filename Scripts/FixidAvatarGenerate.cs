@@ -18,9 +18,9 @@ namespace FixidAvatar {
 		private List<GameObject> fromList;
 		private List<GameObject> toFixidList;
 
-		[MenuItem("VRChat SDK/Utilities/Generate Fixid Avatar")]
+		[MenuItem("VRChat SDK/Utilities/Fixid Avatar Generator")]
 		private static void Open(){
-			EditorWindow.GetWindow(typeof(FixidAvatarGenerate));
+			EditorWindow.GetWindow<FixidAvatarGenerate>("Fixid Avatar Generator");
 		}
 
 
@@ -28,14 +28,15 @@ namespace FixidAvatar {
    		   	GUILayout.Label ("Settings", EditorStyles.boldLabel);
 			this.attachObject = EditorGUILayout.ObjectField (this.attachObject, typeof(Object), true);
 			if(this.attachObject == null){
+	   		   	GUILayout.Label ("Please Attach Avatar ", EditorStyles.boldLabel);
 	   		   	GUILayout.Label ("アバターをセットしてください", EditorStyles.boldLabel);
                 return;
 			}
 
-			this.go = (GameObject)attachObject;
-			avatar = go.transform;
 
-			if(GUILayout.Button("追従アバターを生成する")){
+			if(GUILayout.Button("Generate / 生成")){
+				this.go = (GameObject)attachObject;
+				avatar = go.transform;
 				GenerateFixidAvatar();
 			}
 		}
