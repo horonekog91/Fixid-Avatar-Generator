@@ -10,6 +10,7 @@ namespace FixidAvatar {
 		private GameObject go;
 		private Transform avatar;
 
+		private GameObject target;
 		private GameObject copied;
 
 		private GameObject from;
@@ -25,7 +26,7 @@ namespace FixidAvatar {
 
 
 		void OnGUI() {
-   		   	GUILayout.Label ("Settings", EditorStyles.boldLabel);
+   		   	GUILayout.Label ("追従するアバターを生成します", EditorStyles.boldLabel);
 			this.attachObject = EditorGUILayout.ObjectField (this.attachObject, typeof(Object), true);
 			if(this.attachObject == null){
 	   		   	GUILayout.Label ("Please Attach Avatar ", EditorStyles.boldLabel);
@@ -47,10 +48,10 @@ namespace FixidAvatar {
 			Copy();
 
 			// コピーしたものをアバターの中へ移動
-			copied.transform.parent = avatar.transform;
+			copied.transform.parent = target.transform;
 
 			// 元アバターを 追従元、コピーを追従先として設定
-			from = avatar.transform.GetChild(0).gameObject;
+			from = target.transform.GetChild(0).gameObject;
 			toFixid = copied.transform.GetChild(0).gameObject;
 
 			// 追従可能な状態に書き換え
@@ -59,6 +60,9 @@ namespace FixidAvatar {
 
 			DestroyImmediate(copied.GetComponent<VRCSDK2.VRC_AvatarDescriptor>());
 			DestroyImmediate(copied.GetComponent<VRC.Core.PipelineManager>());
+
+			//  元モデルを非表示
+			avatar.gameObject.SetActive(false);
 
 			// 出来上がったものを Prefab として出力
 		//	CreatePrefab();
@@ -85,7 +89,12 @@ namespace FixidAvatar {
 			int i = 0;
 			foreach(GameObject obj in toFixidList){
 				// ループで追従先にRigidbody をアタッチ
-				Rigidbody rb = obj.AddComponent<Rigidbody>();
+				Rigidbody rb = obj.GetComponent<Rigidbody>();
+				
+				if(rb == null){
+					rb = obj.AddComponent<Rigidbody>();
+				}
+
 				rb.angularDrag = 0;
 				rb.useGravity = false;
 				rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
@@ -120,11 +129,13 @@ namespace FixidAvatar {
 		}
 
 		void Copy(){
-			copied = Object.Instantiate(avatar.gameObject) as GameObject;
+			// 追従化するアバターを用意
+			target = Object.Instantiate(avatar.gameObject) as GameObject;
+			target.name = avatar.gameObject.name + "_fixid";
+
+			copied = Object.Instantiate(target) as GameObject;
 			copied.transform.Translate(0, 0, -1.5f);
 		}
-
-
 	}
 
 }
