@@ -7,22 +7,37 @@ using UnityEditor;
 namespace FixidAvatar {
 	public class FixidAvatarGenerate : EditorWindow 
 	{
-		static Transform avatar;
+		private Object obj;
+		private GameObject go;
+		private Transform avatar;
 
-		static GameObject copied;
+		private GameObject copied;
 
-		static GameObject from;
-		static GameObject toFixid;
+		private GameObject from;
+		private GameObject toFixid;
 
-		static List<GameObject> fromList;
-		static List<GameObject> toFixidList;
+		private List<GameObject> fromList;
+		private List<GameObject> toFixidList;
+
+	    string myString = "Hello World";
+		bool groupEnabled;
+		bool myBool = true;
+		float myFloat = 1.23f;
 
 		[MenuItem("VRChat SDK/Utilities/Generate Fixid Avatar")]
 		private static void Open(){
 			EditorWindow.GetWindow(typeof(FixidAvatarGenerate));
 		}
 
-		static void GenerateFixidAvatar(MenuCommand menuCommand)
+
+		void OnGUI() {
+   		   	GUILayout.Label ("Base Settings", EditorStyles.boldLabel);
+			this.obj = EditorGUILayout.ObjectField (this.obj, typeof(Object), true);
+			this.go = (GameObject)obj;
+			avatar = go.transform;
+		}
+
+		void GenerateFixidAvatar()
 		{
 			avatar = menuCommand.context as Transform;
 
@@ -58,7 +73,7 @@ namespace FixidAvatar {
 			}
 		}
 
-		static void AttachToFixid(){
+		void AttachToFixid(){
 			// List 型で追従先の子孫オブジェクトを取得
 			toFixidList = GetAllChildren.GetAll(toFixid);
 
@@ -83,7 +98,7 @@ namespace FixidAvatar {
 
 		}
 
-		static void CreatePrefab(){
+		void CreatePrefab(){
 			GameObject parent;
 			parent = from.transform.parent.gameObject;
 
@@ -99,10 +114,11 @@ namespace FixidAvatar {
 			AssetDatabase.SaveAssets();
 		}
 
-		static void Copy(){
+		void Copy(){
 			copied = Object.Instantiate(avatar.gameObject) as GameObject;
 			copied.transform.Translate(0, 0, -1.5f);
 		}
+
 
 	}
 
