@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
 namespace FixidAvatar {
 	public class FixidAvatarGenerate : EditorWindow 
 	{
-		private Object obj;
+		private Object attachObject;
 		private GameObject go;
 		private Transform avatar;
 
@@ -19,11 +18,6 @@ namespace FixidAvatar {
 		private List<GameObject> fromList;
 		private List<GameObject> toFixidList;
 
-	    string myString = "Hello World";
-		bool groupEnabled;
-		bool myBool = true;
-		float myFloat = 1.23f;
-
 		[MenuItem("VRChat SDK/Utilities/Generate Fixid Avatar")]
 		private static void Open(){
 			EditorWindow.GetWindow(typeof(FixidAvatarGenerate));
@@ -31,16 +25,23 @@ namespace FixidAvatar {
 
 
 		void OnGUI() {
-   		   	GUILayout.Label ("Base Settings", EditorStyles.boldLabel);
-			this.obj = EditorGUILayout.ObjectField (this.obj, typeof(Object), true);
-			this.go = (GameObject)obj;
+   		   	GUILayout.Label ("Settings", EditorStyles.boldLabel);
+			this.attachObject = EditorGUILayout.ObjectField (this.attachObject, typeof(Object), true);
+			if(this.attachObject == null){
+	   		   	GUILayout.Label ("アバターをセットしてください", EditorStyles.boldLabel);
+                return;
+			}
+
+			this.go = (GameObject)attachObject;
 			avatar = go.transform;
+
+			if(GUILayout.Button("追従アバターを生成する")){
+				GenerateFixidAvatar();
+			}
 		}
 
 		void GenerateFixidAvatar()
 		{
-			avatar = menuCommand.context as Transform;
-
 			// アバターをコピー
 			Copy();
 
@@ -55,11 +56,14 @@ namespace FixidAvatar {
 			AttachFrom();
 			AttachToFixid();
 
+			DestroyImmediate(copied.GetComponent<VRCSDK2.VRC_AvatarDescriptor>());
+			DestroyImmediate(copied.GetComponent<VRC.Core.PipelineManager>());
+
 			// 出来上がったものを Prefab として出力
-			CreatePrefab();
+		//	CreatePrefab();
 		}
 
-		static void AttachFrom(){
+		void AttachFrom(){
 			// List 型で本体の子孫オブジェクトを取得
 			fromList = GetAllChildren.GetAll(from);
 
