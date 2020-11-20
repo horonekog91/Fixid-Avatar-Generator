@@ -2,6 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
+/**
+ こちらのソースをお借りしています。
+ https://gist.github.com/kazuooooo/a230988bf167f181bac2#file-getallchildren-cs
+*/
 namespace FixidAvatarGenerator {
 	public static class GetAllChildren
 	{
