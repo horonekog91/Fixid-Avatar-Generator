@@ -60,14 +60,10 @@ namespace FixidAvatarGenerator {
 			AttachFrom();
 			AttachToFixid();
 
-			DestroyImmediate(copied.GetComponent<VRCSDK2.VRC_AvatarDescriptor>());
 			DestroyImmediate(copied.GetComponent<VRC.Core.PipelineManager>());
 
 			//  元モデルを非表示
 			avatar.gameObject.SetActive(false);
-
-			// 出来上がったものを Prefab として出力
-		//	CreatePrefab();
 		}
 
 		void AttachFrom(){
@@ -112,22 +108,6 @@ namespace FixidAvatarGenerator {
 				i++;
 			}
 
-		}
-
-		void CreatePrefab(){
-			GameObject parent;
-			parent = from.transform.parent.gameObject;
-
-			// プレファブ作成
-			var prefab = PrefabUtility.SaveAsPrefabAsset(parent, "Assets/FixidAvatar/Prefabs/" +parent.name+ "_fixid.prefab");
-
-			//　リンクを解除
-			PrefabUtility.UnpackPrefabInstance(parent, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
-
-			// シーンから削除  
-			Object.DestroyImmediate(parent);
-
-			AssetDatabase.SaveAssets();
 		}
 
 		void Copy(){
