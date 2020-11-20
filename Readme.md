@@ -7,3 +7,6 @@ Fixid Avatar Generator をインポート
 Unity 上部のメニューの「VRCDeveloperTool > Fixid Avatar Generator」を選択  
 現れる Window にアバターをセット  
 「Generate / 生成」ボタンを押すことで、追従するモデルがセットになったアバターがシーン上に現れます。
+
+## 注意
+Avatar Discriptorなども複製してしまうため、追従側のアバターのAvatar Discriptorなどは削除してからアップロードしてください。
