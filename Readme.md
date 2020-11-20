@@ -2,7 +2,7 @@
 自分と同じ動きをするモデルがくっついた VRChat 向けアバターを生成するジェネレータです。
 
 ## 導入手順
-VRCSDK2 をインポート  
+VRCSDK2 or VRCSDK3 をインポート  
 Fixid Avatar Generator をインポート  
 Unity 上部のメニューの「VRCDeveloperTool > Fixid Avatar Generator」を選択  
 現れる Window にアバターをセット  
